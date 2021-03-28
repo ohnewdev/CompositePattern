@@ -17,6 +17,12 @@ namespace CompositePattern
         }
     }
 
+    public interface Menu
+    {
+        public Iterator createIterator();
+    }
+
+
     public class MenuItem
     {
         private string name;
@@ -38,7 +44,7 @@ namespace CompositePattern
         public double Price { get => price; set => price = value; }
     }
 
-    public class PancakeHouseMenu
+    public class PancakeHouseMenu : Menu
     {
         private ArrayList menuItems;
 
@@ -61,11 +67,15 @@ namespace CompositePattern
 
         public Iterator createIterator()
         {
+
             return new PancakeHouseIterator(menuItems);
         }
+
+
+
     }
 
-    public class DinerMenu
+    public class DinerMenu : Menu
     {
         private static int MAX_ITEMS = 6;
         private int numberOfItems = 0;
@@ -139,6 +149,24 @@ namespace CompositePattern
             position++;
             return menuItem;
         }
+        public void remove()
+        {
+            if (position <= 0)
+            {
+                return;
+
+            }
+
+            if (items[position - 1] != null)
+            {
+                for (int i = position - 1; i < (items.Length - 1); i++)
+                {
+                    items[i] = items[i + 1];
+
+                }
+                items[items.Length - 1] = null;
+            }
+        }
     }
 
     public class PancakeHouseIterator : Iterator
@@ -173,14 +201,28 @@ namespace CompositePattern
         {
             return new PancakeHouseIterator(items);
         }
+
+        public void remove()
+        {
+            if (position <= 0)
+            {
+
+
+            }
+
+            if (items[position - 1] != null)
+            {
+                items.Remove(items.Count - 1);
+            }
+        }
     }
 
     public class Waitress
     {
-        private PancakeHouseMenu pancakeHouseMenu;
-        private DinerMenu dinerMenu;
+        private Menu pancakeHouseMenu;
+        private Menu dinerMenu;
 
-        public Waitress(PancakeHouseMenu pancakeHouseMenu, DinerMenu dinerMenu)
+        public Waitress(Menu pancakeHouseMenu, Menu dinerMenu)
         {
             this.pancakeHouseMenu = pancakeHouseMenu;
             this.dinerMenu = dinerMenu;
