@@ -2,7 +2,8 @@
 using System.Collections;
 
 
-// Iterator
+
+// Iterator : headFirst 
 namespace CompositePattern
 {
     class Program
