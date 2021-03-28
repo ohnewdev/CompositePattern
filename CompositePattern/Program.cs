@@ -1,23 +1,19 @@
 ﻿using System;
 using System.Collections;
 
-
-
-// Iterator : headFirst 
+// Iterator : headFirst
 namespace CompositePattern
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            PancakeHouseMenu pancakeHouseMenu = new PancakeHouseMenu();
-            DinerMenu dinerMenu = new DinerMenu();
+            PancakeHouseMenu pancakeHouseMenu = new();
+            DinerMenu dinerMenu = new();
 
-            Waitress waitress = new Waitress(pancakeHouseMenu, dinerMenu);
+            Waitress waitress = new(pancakeHouseMenu, dinerMenu);
 
             waitress.PrintMenu();
-
-
         }
     }
 
@@ -44,7 +40,7 @@ namespace CompositePattern
 
     public class PancakeHouseMenu
     {
-        ArrayList menuItems;
+        private ArrayList menuItems;
 
         public PancakeHouseMenu()
         {
@@ -55,10 +51,9 @@ namespace CompositePattern
             addItem("Pancake set4", "desc4....", true, 3.59);
         }
 
-
         public void addItem(string name, string description, bool vegetarian, double price)
         {
-            MenuItem menuItem = new MenuItem(name, description, vegetarian, price);
+            MenuItem menuItem = new(name, description, vegetarian, price);
             menuItems.Add(menuItem);
         }
 
@@ -70,13 +65,11 @@ namespace CompositePattern
         }
     }
 
-
-
     public class DinerMenu
     {
-        static int MAX_ITEMS = 6;
-        int numberOfItems = 0;
-        MenuItem[] menuItems;
+        private static int MAX_ITEMS = 6;
+        private int numberOfItems = 0;
+        private MenuItem[] menuItems;
 
         public DinerMenu()
         {
@@ -88,10 +81,9 @@ namespace CompositePattern
             addItem("DinerMenu set4", "desc4....", false, 3.05);
         }
 
-
         private void addItem(string name, string description, bool vegetarian, double price)
         {
-            MenuItem menuItem = new MenuItem(name, description, vegetarian, price);
+            MenuItem menuItem = new(name, description, vegetarian, price);
 
             if (numberOfItems >= MAX_ITEMS)
             {
@@ -102,27 +94,27 @@ namespace CompositePattern
                 menuItems[numberOfItems] = menuItem;
                 numberOfItems++;
             }
-
         }
+
         //public MenuItem[] MenuItems { get => menuItems; }
 
         public Iterator createIterator()
         {
             return new DinerMenuIterator(menuItems);
         }
-
     }
 
     public interface Iterator
     {
         bool HasNext();
+
         Object next();
     }
 
     public class DinerMenuIterator : Iterator
     {
-        MenuItem[] items;
-        int position = 0;
+        private MenuItem[] items;
+        private int position = 0;
 
         public DinerMenuIterator(MenuItem[] items)
         {
@@ -151,8 +143,8 @@ namespace CompositePattern
 
     public class PancakeHouseIterator : Iterator
     {
-        ArrayList items;
-        int position = 0;
+        private ArrayList items;
+        private int position = 0;
 
         public PancakeHouseIterator(ArrayList items)
         {
@@ -169,30 +161,24 @@ namespace CompositePattern
             {
                 return true;
             }
-
         }
 
         public object next()
         {
-
             MenuItem menuItem = (MenuItem)items[position++];
             return menuItem;
-
         }
 
         public Iterator createIterator()
         {
             return new PancakeHouseIterator(items);
         }
-
-
-
     }
 
     public class Waitress
     {
-        PancakeHouseMenu pancakeHouseMenu;
-        DinerMenu dinerMenu;
+        private PancakeHouseMenu pancakeHouseMenu;
+        private DinerMenu dinerMenu;
 
         public Waitress(PancakeHouseMenu pancakeHouseMenu, DinerMenu dinerMenu)
         {
@@ -220,8 +206,6 @@ namespace CompositePattern
                 Console.Write(menuItem.Price + ", ");
                 Console.WriteLine(menuItem.Description);
             }
-
         }
     }
-
 }
